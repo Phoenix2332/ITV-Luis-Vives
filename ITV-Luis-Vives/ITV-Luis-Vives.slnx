@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ITV-Luis-Vives.Test/ITV-Luis-Vives.Test.csproj" />
+  <Project Path="ITV-Luis-Vives/ITV-Luis-Vives.csproj" />
+</Solution>
