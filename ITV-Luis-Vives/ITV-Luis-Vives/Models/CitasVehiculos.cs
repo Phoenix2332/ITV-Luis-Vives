@@ -14,7 +14,9 @@ public record CitasVehiculos {
     public Motor Motor { get; set; }
     public string DniDueño { get; set; } = string.Empty;
     public DateOnly FechaMatriculacion { get; set; }
-    public DateOnly FechaInspeccion { get; set; }
+    public DateOnly FechaUltimaInspeccion { get; set; }
+    public DateOnly FechaProximaInspeccion { get; set; }
+    public bool IsInspeccionApta => DateOnly.FromDateTime(DateTime.Today) <= FechaProximaInspeccion;
     public DateTime CreateAt { get; set; } = DateTime.UtcNow;
     public DateTime UpdateAt { get; set; } = DateTime.UtcNow;
     public DateTime? DeleteAt { get; set; }
@@ -29,10 +31,15 @@ public record CitasVehiculos {
         return other is not null && string.Equals(Matricula, other.Matricula, StringComparison.OrdinalIgnoreCase);
     }
 
+    public string ItvApta() {
+        return IsInspeccionApta ? "Apta" : "No Apta";
+    }
+
     public override string ToString() {
         return $"Cita: [Id-{Id}, Matricula-{Matricula}, Marca-{Marca}, Modelo-{Modelo}, Cilindrada-{Cilindrada}, " +
                $"Motor-{Motor.ToString()}, Dni dueño-{DniDueño}, Fecha matriculacion-{FechaMatriculacion}, " +
-               $"Fecha inspeccion-{FechaInspeccion}, Fecha de creacion-{CreateAt}, " +
+               $"Fecha última inspeccion-{FechaUltimaInspeccion}, Fecha próxima inspección-{FechaProximaInspeccion}" +
+               $"Estado de la inspección-{ItvApta()}, Fecha de creacion-{CreateAt}, " +
                $"Fecha de última modificacion-{UpdateAt}, Fecha de eliminación-{DeleteAt}, " +
                $"Ha sido eliminado-{IsDelete}]";
     }
