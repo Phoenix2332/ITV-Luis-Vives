@@ -81,7 +81,7 @@ public class CitasVehiculosTest {
         }
 
         [Test]
-        public void GetHashCode_FechaActualMenorAnteriorFechaProximaInspeccion_DeberiaSerApta() {
+        public void Bool_FechaActualMenorAnteriorFechaProximaInspeccion_DeberiaSerApta() {
             // Arrange
             var citasVehiculos = new CitasVehiculos { FechaProximaInspeccion = new DateOnly(2026, 05, 20) };
 
@@ -95,7 +95,7 @@ public class CitasVehiculosTest {
         }
 
         [Test]
-        public void GetHashCode_FechaActualMenorPosteriorFechaProximaInspeccion_DeberiaSerNoApta() {
+        public void Bool_FechaActualMenorPosteriorFechaProximaInspeccion_DeberiaSerNoApta() {
             // Arrange
             var citasVehiculos = new CitasVehiculos { FechaProximaInspeccion = new DateOnly(2025, 05, 20) };
 
@@ -106,6 +106,30 @@ public class CitasVehiculosTest {
             // Assert
             resultado1.Should().BeFalse();
             resultado2.Should().Be("No Apta");
+        }
+        
+        [Test]
+        public void Bool_DeleteAtNulo_IsDeleteDeberiaSerFalse() {
+            // Arrange
+            var citasVehiculos = new CitasVehiculos { DeleteAt = null };
+
+            // Act
+            var resultado = citasVehiculos.IsDelete;
+
+            // Assert
+            resultado.Should().BeFalse();
+        }
+        
+        [Test]
+        public void Bool_DeleteAtFecha_IsDeleteDeberiaSerFalse() {
+            // Arrange
+            var citasVehiculos = new CitasVehiculos { DeleteAt = DateTime.UtcNow };
+
+            // Act
+            var resultado = citasVehiculos.IsDelete;
+
+            // Assert
+            resultado.Should().BeTrue();
         }
     }
 
