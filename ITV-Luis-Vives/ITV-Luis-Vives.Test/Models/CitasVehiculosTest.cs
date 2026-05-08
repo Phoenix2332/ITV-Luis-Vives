@@ -21,7 +21,8 @@ public class CitasVehiculosTest {
                 Motor = Motor.Diesel,
                 DniDueño = "12345678Z",
                 FechaMatriculacion = new DateOnly(2002, 04, 20, AppConfig.Cultura.Calendar),
-                FechaInspeccion = new DateOnly(2026, 05, 20, AppConfig.Cultura.Calendar)
+                FechaUltimaInspeccion = new DateOnly(2025, 05, 20, AppConfig.Cultura.Calendar),
+                FechaProximaInspeccion = new DateOnly(2026, 05, 20, AppConfig.Cultura.Calendar)
             };
 
             // Act
@@ -35,6 +36,7 @@ public class CitasVehiculosTest {
             resultado.Should().Contain("Diesel");
             resultado.Should().Contain("12345678Z");
             resultado.Should().Contain("20/04/2002");
+            resultado.Should().Contain("20/05/2025");
             resultado.Should().Contain("20/05/2026");
         }
 
@@ -76,6 +78,34 @@ public class CitasVehiculosTest {
 
             // Assert
             hash1.Should().Be(hash2);
+        }
+
+        [Test]
+        public void GetHashCode_FechaActualMenorAnteriorFechaProximaInspeccion_DeberiaSerApta() {
+            // Arrange
+            var citasVehiculos = new CitasVehiculos { FechaProximaInspeccion = new DateOnly(2026, 05, 20) };
+
+            // Act
+            var resultado1 = citasVehiculos.IsInspeccionApta;
+            var resultado2 = citasVehiculos.ItvApta();
+
+            // Assert
+            resultado1.Should().BeTrue();
+            resultado2.Should().Be("Apta");
+        }
+
+        [Test]
+        public void GetHashCode_FechaActualMenorPosteriorFechaProximaInspeccion_DeberiaSerNoApta() {
+            // Arrange
+            var citasVehiculos = new CitasVehiculos { FechaProximaInspeccion = new DateOnly(2025, 05, 20) };
+
+            // Act
+            var resultado1 = citasVehiculos.IsInspeccionApta;
+            var resultado2 = citasVehiculos.ItvApta();
+
+            // Assert
+            resultado1.Should().BeFalse();
+            resultado2.Should().Be("No Apta");
         }
     }
 
